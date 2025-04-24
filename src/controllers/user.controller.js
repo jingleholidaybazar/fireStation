@@ -44,6 +44,7 @@ const createUser = asyncHandler(async (req, res) => {
     confirmPassword,
     pisNo,
   } = req.body;
+  console.log(req.body);
 
   if (
     !fullName ||
@@ -54,7 +55,7 @@ const createUser = asyncHandler(async (req, res) => {
     !role ||
     !district ||
     !password ||
-    confirmPassword ||
+    !confirmPassword ||
     !pisNo
   ) {
     throw new ApiError(401, "All fields are required");
