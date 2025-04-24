@@ -41,7 +41,7 @@ const createUser = asyncHandler(async (req, res) => {
     role,
     district,
     password,
-
+    confirmPassword,
     pisNo,
   } = req.body;
 
@@ -54,9 +54,14 @@ const createUser = asyncHandler(async (req, res) => {
     !role ||
     !district ||
     !password ||
+    confirmPassword ||
     !pisNo
   ) {
     throw new ApiError(401, "All fields are required");
+  }
+
+  if (password !== confirmPassword) {
+    throw new ApiError(400, "Passwords do not match");
   }
 
   const existingUser = await User.findOne({ email });
