@@ -6,7 +6,7 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = process.env.CORS_ORIGIN; 
+const allowedOrigins = process.env.CORS_ORIGIN.split(",");
 
 app.use(
   cors({
@@ -30,18 +30,15 @@ app.use(cookieParser());
 
 // Routers
 import userRouter from "./routes/user.route.js";
-app.use("/api/v1/users", userRouter); 
-
+app.use("/api/v1/users", userRouter);
 
 app.get("/", (req, res) => {
   res.send("Server started via GET request");
 });
 
-
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });
 });
-
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ success: false, message: err.message });
