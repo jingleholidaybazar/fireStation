@@ -6,23 +6,11 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [
-  "https://beautiful-dasik-ad7383.netlify.app",
-  "http://localhost:8080",
-];
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true); // Allow request
-      } else {
-        callback(new Error("Not allowed by CORS")); // Block request
-      }
-    }, 
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: process.env.CORS_ORIGIN,
     methods: ["GET", "POST", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
