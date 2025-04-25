@@ -3,7 +3,7 @@ import {
   createUser,
   deleteUser,
   getAllUsers,
-  getSingleUser,
+  getCurrentUser,
   userLogin,
   verifyOTP,
 } from "../controllers/user.controller.js";
@@ -21,7 +21,8 @@ router.route("/verifyotp").post(verifyOTP);
 
 router.use(verifyJWT);
 
-router.route("/:id").get(getSingleUser).delete(deleteUser);
+router.route("/current-user").get(getCurrentUser);
+router.route("/:id").delete(deleteUser);
 router.route("/").get(getAllUsers);
 
 export default router;

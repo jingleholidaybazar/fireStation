@@ -219,24 +219,10 @@ const getAllUsers = asyncHandler(async (req, res) => {
   res.status(201).json(new ApiResponse(201, userList, "user get successful"));
 });
 
-const getSingleUser = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    throw new ApiError(400, "ID is not valid");
-  }
-
-  const singleUser = await User.findById(id);
-
-  if (!singleUser) {
-    throw new ApiError(404, "User not found");
-  }
-
+const getCurrentUser = asyncHandler(async (req, res) => {
   res
     .status(200)
-    .json(
-      new ApiResponse(200, singleUser, "Single user retrieved successfully")
-    );
+    .json(new ApiResponse(200, req.user, "Single user retrieved successfully"));
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
@@ -264,6 +250,6 @@ export {
   userLogin,
   verifyOTP,
   getAllUsers,
-  getSingleUser,
+  getCurrentUser,
   deleteUser,
 };
