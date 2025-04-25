@@ -1,10 +1,14 @@
 import { Router } from "express";
 import {
   createUser,
+  deleteUser,
+  getAllUsers,
+  getSingleUser,
   userLogin,
   verifyOTP,
 } from "../controllers/user.controller.js";
 import { upload } from "../middleware/multer.middlewares.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
@@ -14,5 +18,10 @@ router
 
 router.route("/sendotp").post(userLogin);
 router.route("/verifyotp").post(verifyOTP);
+
+router.use(verifyJWT);
+
+router.route("/:id").get(getSingleUser).delete(deleteUser);
+router.route("/").get(getAllUsers);
 
 export default router;

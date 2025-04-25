@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { uploadOnCloudinary } from "../config/cloudinary.js";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
@@ -44,7 +45,6 @@ const createUser = asyncHandler(async (req, res) => {
     confirmPassword,
     pisNo,
   } = req.body;
-  console.log(req.body);
 
   if (
     !fullName ||
@@ -211,4 +211,59 @@ const verifyOTP = asyncHandler(async (req, res) => {
     );
 });
 
-export { createUser, userLogin, verifyOTP };
+const getAllUsers = asyncHandler(async (req, res) => {
+  const userList = await User.find({});
+  if (!userList) {
+    throw new ApiError(401, "User List Not Found");
+  }
+  res.status(201).json(new ApiResponse(201, userList, "user get successful"));
+});
+
+const getSingleUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "ID is not valid");
+  }
+
+  const singleUser = await User.findById(id);
+
+  if (!singleUser) {
+    throw new ApiError(404, "User not found");
+  }
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, singleUser, "Single user retrieved successfully")
+    );
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(401, "ID is not valid");
+  }
+
+  await User.findByIdAndDelete(id);
+
+  res.status(200).json(new ApiResponse(200, "", "User delete Successful"));
+});
+
+const updateUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(401, "ID is not valid");
+  }
+});
+
+export {
+  createUser,
+  userLogin,
+  verifyOTP,
+  getAllUsers,
+  getSingleUser,
+  deleteUser,
+};
