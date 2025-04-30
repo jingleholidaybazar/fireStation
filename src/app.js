@@ -6,14 +6,34 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = ["http://localhost:8080"];
+// const allowedOrigins = ["http://localhost:8080"];
+
+// app.use(
+//   cors({
+//     origin: allowedOrigins,
+//     credentials: true,
+//     // allowedHeaders: ["Content-Type", "Authorization"],
+//     // methods: ["GET", "POST", "PATCH", "DELETE"],
+//   })
+// );
+
+const allowedOrigins = [
+  "http://localhost:8080",
+  "https://your-frontend-domain.com",
+];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-    // allowedHeaders: ["Content-Type", "Authorization"],
-    // methods: ["GET", "POST", "PATCH", "DELETE"],
+    methods: ["GET", "POST", "Patch", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
