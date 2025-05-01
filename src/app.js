@@ -44,7 +44,9 @@ app.use(cookieParser());
 
 // Routers
 import userRouter from "./routes/user.route.js";
+// import personnelRouter from "./routes/personnel.route.js";
 app.use("/api/v1/users", userRouter);
+// app.use("/api/v1/personnel", personnelRouter);
 
 app.get("/", (req, res) => {
   res.send("Server started via GET request");

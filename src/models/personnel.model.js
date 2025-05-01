@@ -15,6 +15,7 @@ const personnelSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
+    enum: ["on-duty", "off-duty", "on-leave", "training"],
   },
   team: {
     type: String,
@@ -29,5 +30,5 @@ const personnelSchema = new mongoose.Schema({
     required: true,
   },
 });
-const personnel = mongoose.model("Personnel", personnelSchema);
-export { personnel };
+const Personnel = mongoose.model("Personnel", personnelSchema);
+export { Personnel };
